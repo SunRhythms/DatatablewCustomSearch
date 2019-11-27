@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div style="background-color:#f5f5f5; padding:20px">
+    <h2>Search Panel</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" id="txtName" /></td>
+                <td>
+                    <input type="button" value="Search" id="btnSearch" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<table id="demodata" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    DemoDatatable();
+    function DemoDatatable() {
+        $("#demodata").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "orderMulti": false,
+            "destroy": true,
+            "ordering": true,
+            "ajax": {
+                "url": '/Home/GetTableData',
+                "type": "POST",
+                "datatype": "json"
+            },
+
+            "columns": [
+                { "data": "Id", "name": "Id", "autoWidth": true }
+                , { "data": "Name", "Name": "Name", "autoWidth": true }
+                , { "data": "Quantity", "name": "Quantity", "autoWidth": true }
+                , { "data": "Price", "name": "Price", "autoWidth": true }
+                , { "data": "Status", "name": "Status", "autoWidth": true }
+            ]
+        });
+    }
+    oTable = $('#demodata').DataTable();
+    $('#btnSearch').click(function () {
+        oTable.columns(1).search($('#txtName').val().trim());
+        oTable.draw();
+    });
+</script>
